@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import Swiper from "swiper/bundle"
-import "swiper/swiper-bundle.min.css"
+import Swiper from "swiper/bundle"          //引入js文件
+import "swiper/swiper-bundle.min.css"       //引入css文件
 
 export default {
     mounted(){

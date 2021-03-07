@@ -21,6 +21,7 @@
     .kerwinactive{
         color: #f40;
     }
+
     ul{
         display: flex;
         position:fixed;
@@ -32,6 +33,7 @@
         border-top: 1px solid #eee;
         box-sizing: border-box;
         padding:8px;
+        z-index: 99;
     }
     li{
         flex:1;
