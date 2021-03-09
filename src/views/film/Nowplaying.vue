@@ -1,7 +1,13 @@
 <template>
     <div>
-        <ul>
-            <li v-for="item in dataList" :key="item.filmId" @click="handleClick(item.filmId)">
+        <van-list
+            v-model="loading"
+            :finished="finished"
+            finished-text="我是有底线的"
+            @load="onLoad"
+            :immediate-check="false"
+>
+            <van-cell v-for="item in dataList" :key="item.filmId" @click="handleClick(item.filmId)">
                 <div class="box">
                     <img :src="item.poster" :title="item.name"/>
                     <div class="name_info">
@@ -15,8 +21,8 @@
                     </div>
                     <button>购票</button>
                 </div>
-            </li>
-        </ul>
+            </van-cell>
+        </van-list>
     </div>
 </template>
 
@@ -25,36 +31,68 @@
 //引入封装了axios的http模块
 import http from "@/util/http"
 import Vue from "vue"
+import {List,Cell} from "vant"
+Vue.use(List).use(Cell)
 
+//用过滤器对演员数据进行过滤，因为传过来的数据是数组
 Vue.filter("actorsFilter",(actors)=>{
     if(actors === undefined){
         return "暂无主演"
     }
-    return actors.map(item=>item.name).join("")
+    return actors.map(item=>item.name).join(" ")
 })
 export default {
     data(){
         return{
-            dataList:[]
+            dataList:[],
+            loading:false,      //每当onLoad执行完后，该loding值会被置位true
+            finished:false,
+            currentPage:1,       //记录第几页数据
+            total:0
         }
     },
     mounted(){
         http({
-            url:"/gateway?cityId=440300&pageNum=1&pageSize=5&type=1&k=9350393",
+            url:"/gateway?cityId=440300&pageNum=1&pageSize=10&type=1&k=9350393",
             headers:{
                 'X-Host': 'mall.film-ticket.film.list'
             },
             // method:"get"
         }).then((res)=>{
             this.dataList = res.data.data.films;
+            this.total = res.data.data.total;
         })
     },
     methods:{
+
+        //列表懒加载， List组件给提供的回调函数，当页面快到底部的时候进行数据的加载
+        onLoad(){
+
+            //判断是否已经获取到所有数据了
+            if(this.dataList.length === this.total){
+                this.finished = true;
+                return;
+            }
+
+            //1.发送ajax请求
+            //2.合并数据
+            //3.loading置为false
+
+            this.currentPage++;     //将页数增加1，请求下一页数据
+
+            http({
+                url:`/gateway?cityId=440300&pageNum=${this.currentPage}&pageSize=10&type=1&k=9350393`,
+                headers:{
+                    'X-Host': 'mall.film-ticket.film.list'
+                },
+                // method:"get"
+            }).then((res)=>{
+                this.dataList = [...this.dataList,...res.data.data.films];      //利用展开运算符进行数组的合并
+                this.loading = false    //将loading置为false表示这次请求已经完成了
+            })
+        },
         handleClick(filmId){
             console.log(filmId);
-            // location.href=`#/detail`
-            // location.href=`#/detail${filmId}`
-            // this.$router.push(`/detail/${filmId}`)
             this.$router.push({
                 name:"kerwinDetail",
                 params:{
@@ -81,7 +119,6 @@ export default {
         display: flex;
         justify-content: flex-start;
         padding: 10px;
-        border-bottom: 1px solid #eee;
     }
     .box img{
         width: 100px;
@@ -101,7 +138,7 @@ export default {
     .name_info{
         padding: 10px;
         overflow: hidden;
-        width: 200px;
+        width: 180px;
     }
     .info{
         font-size: 12px;
@@ -117,5 +154,12 @@ export default {
     }
     .score{
         color: #ffb232;
+    }
+    .van-cell{
+        position: relative;
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        padding: 10px;
     }
 </style>

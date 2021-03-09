@@ -1,11 +1,16 @@
 <template>
     <div>
         <h1>Login</h1> 
-        <button @click="login">登录</button>
+        <!-- <button >登录</button> -->
+        <van-button type="info" block @click="login">登录</van-button>
     </div>
 </template>
 
 <script>
+import Vue from 'vue';
+import { Button } from 'vant';
+Vue.use(Button);
+
 export default {
     methods:{
         login(){
@@ -18,18 +23,10 @@ export default {
 }
 </script>
 <style scoped>
-    div{
-        text-align: center;
-        margin-top: 50%;
-    }
-    button{
-        margin: 100px;
-        width: 100px;
-        height: 50px;
-        border:none;
-        outline:none;
-        letter-spacing: 5px;
-        text-align: center;
-        border-radius: 5px;
-    }
+   div{
+       display: flex;
+       flex-direction: column;
+       justify-content: center;
+       align-items: center;
+   }
 </style>
