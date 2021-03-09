@@ -1,13 +1,9 @@
 <template>
     
     <div>
-        <van-nav-bar
-            title="影院"
-            @click-left="onClickLeft"
-            @click-right="onClickRight"
-        >
+        <van-nav-bar title="影院" @click-left="onClickLeft" @click-right="onClickRight">
             <template #left>
-                上海
+                {{$store.state.cityName}}
                 <van-icon name="arrow-down" color="#000" size="10"/>
             </template>
             <template #right>
@@ -43,9 +39,15 @@ export default {
     methods:{
         onClickLeft(){
             this.$router.push("/city")
+        },
+        onClickRight(){
+            this.$router.push("/city")
         }
     },
     mounted(){
+        //获取到城市ID和城市name
+
+
         this.height = document.documentElement.clientHeight-100+"px";
         http({
             url:'/gateway?cityId=310100&ticketFlag=1&k=6714633',

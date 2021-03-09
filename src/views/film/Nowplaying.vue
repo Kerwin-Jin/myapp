@@ -69,7 +69,7 @@ export default {
         onLoad(){
 
             //判断是否已经获取到所有数据了
-            if(this.dataList.length === this.total){
+            if(this.dataList.length === this.total && this.dataList.length!=0){
                 this.finished = true;
                 return;
             }
