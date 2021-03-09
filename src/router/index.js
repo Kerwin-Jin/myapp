@@ -5,6 +5,7 @@ import Cinema from "../views/Cinema.vue"
 import Center from "../views/Center.vue"
 import Detail from "../views/Detail.vue"
 import Login from "../views/Login.vue"
+import City from "../views/City.vue"
 import Nowplaying from "../views/film/Nowplaying"
 import Comingsoon from "../views/film/Comingsoon"
 
@@ -49,6 +50,10 @@ const routes = [
     path:"/detail/:filmId",
     component:Detail,
     name:"kerwinDetail"
+  },
+  {
+    path:"/city",
+    component:City
   },
   {
     path:"*",
