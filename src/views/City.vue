@@ -11,7 +11,7 @@
         <van-index-bar :index-list="computedCityList" highlight-color="#8dc149" @select="handleSelect" >
             <div v-for="data in cityList" :key="data.type">
                 <van-index-anchor :index="data.type" />
-                <van-cell :title="item.name" v-for="item,index in data.list" :key="index" @click="handleChangePage(item.name)"/>
+                <van-cell :title="item.name" v-for="item,index in data.list" :key="index" @click="handleChangePage(item.name,item.cityId)"/>
             </div>
         </van-index-bar>
 
@@ -81,12 +81,14 @@ export default {
             })
         },
 
-        handleChangePage(name){
+        handleChangePage(name, cityId){
             
             //将当前选中的城市ID和城市名字传出去
             // this.$store.state.cityName = name
 
-            this.$store.commit('changeCityName',name)
+            this.$store.commit('changeCityName', name)
+            this.$store.commit('changeCityId', cityId)
+
             this.$router.back()
         }
     }

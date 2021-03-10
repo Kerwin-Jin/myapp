@@ -81,7 +81,7 @@ export default {
             this.currentPage++;     //将页数增加1，请求下一页数据
 
             http({
-                url:`/gateway?cityId=440300&pageNum=${this.currentPage}&pageSize=10&type=1&k=9350393`,
+                url:`/gateway?cityId=${this.$store.state.cityId}&pageNum=${this.currentPage}&pageSize=10&type=1&k=9350393`,
                 headers:{
                     'X-Host': 'mall.film-ticket.film.list'
                 },

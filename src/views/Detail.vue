@@ -109,6 +109,9 @@ export default {
     },
     mounted(){
 
+        //通过$state中的isTabbarShow让底部导航栏隐藏
+        this.$store.commit("hide")
+
         // console.log("利用传过来的动态ID","向后端发送ajax请求");
         http({
             url:`/gateway?filmId=${this.$route.params.filmId}&k=9244215`,
@@ -125,6 +128,11 @@ export default {
         // .then((res)=>{
         //     console.log(res.data);
         // })
+   },
+
+   //在详情页销毁之前记得要把底部导航栏的状态设为true
+   beforeDestroy(){
+       this.$store.commit("show")
    }
 }
 </script>
