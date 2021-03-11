@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Film from "../views/Film.vue"
 import Cinema from "../views/Cinema.vue"
+import Search from "../views/Search.vue"
 import Center from "../views/Center.vue"
 import Detail from "../views/Detail.vue"
 import Login from "../views/Login.vue"
@@ -41,6 +42,10 @@ const routes = [
   {
     path:"/cinema",
     component:Cinema
+  },
+  {
+    path:"/cinema/search",
+    component:Search
   },
   {
     path:"/login",

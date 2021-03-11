@@ -38,10 +38,12 @@ export default {
     },
     methods:{
         onClickLeft(){
+
+            this.$store.commit("clearCinemaList")
             this.$router.push("/city")
         },
         onClickRight(){
-            this.$router.push("/city")
+            this.$router.push("/cinema/search")
         }
     },
     mounted(){
