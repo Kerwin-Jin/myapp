@@ -18,6 +18,7 @@
 <script>
 import Vue from 'vue';
 import { Search,List,Cell} from 'vant';
+import { mapActions, mapState } from 'vuex';
 
 Vue.use(Search).use(List).use(Cell);
 export default {
@@ -27,6 +28,8 @@ export default {
         }
     },
     methods:{
+
+        ...mapActions("CinemaModule",['getCinemaData']),
         onCancel(){
             //这里可以用back,push,replace,back是返回，如果首先打开的就是这个路径，那就没法返回，在这里用back不好
             //如果用push，会往栈中重复的压数据，也不太好
@@ -36,6 +39,9 @@ export default {
         }
     },
     computed:{
+
+        ...mapState("CityModule",['cityId']),
+        ...mapState("CinemaModule",['cinemaList']),
         //用计算属性来实现关键字搜索
         computedCinemaList(){
             //如果没有输入值或者输入的值为空，那就不显示列表
@@ -43,15 +49,15 @@ export default {
                 return []
             }
 
-            return this.$store.state.cinemaList.filter(item=>{
+            return this.cinemaList.filter(item=>{
                 return item.name.toUpperCase().includes(this.value.toUpperCase()) || item.address.toUpperCase().includes(this.value.toUpperCase())
             })
         }
     },
     mounted(){
-        if(this.$store.state.cinemaList.length === 0){
+        if(this.cinemaList.length === 0){
             //Vuex的异步流程，把请求数据的操作交给store中的action
-            this.$store.dispatch("getCinemaData",this.$store.state.cityId).then(res=>{
+            this.getCinemaData(this.cityId).then(res=>{
 
             })
         }else{

@@ -22,6 +22,7 @@
 import Vue from 'vue';
 import { IndexBar, IndexAnchor,Cell ,Toast,NavBar,Search } from 'vant';
 import http from "@/util/http"
+import { mapMutations } from 'vuex';
 Vue.use(IndexBar).use(IndexAnchor).use(Cell).use(Toast).use(NavBar).use(Search);
 
 export default {
@@ -36,6 +37,9 @@ export default {
         }
     },
     mounted(){
+
+        this.hide() //隐藏底部Tabbar
+
         http({
             url:'https://m.maizuo.com/gateway?k=351698',
             headers:{
@@ -47,6 +51,8 @@ export default {
     },
     methods:{
 
+        ...mapMutations("CityModule",['changeCityName','changeCityId']),
+        ...mapMutations("TabbarModule",['show','hide']),
         //将返回的结果转换为我们需要的格式
         handleCityData(cities){
 
@@ -86,11 +92,16 @@ export default {
             //将当前选中的城市ID和城市名字传出去
             // this.$store.state.cityName = name
 
-            this.$store.commit('changeCityName', name)
-            this.$store.commit('changeCityId', cityId)
+            // this.$store.commit('changeCityName', name)
+            // this.$store.commit('changeCityId', cityId)
+            this.changeCityName(name)
+            this.changeCityId(cityId)
 
             this.$router.back()
         }
+    },
+    beforeDestroy(){
+        this.show() //隐藏底部Tabbar
     }
 }
 </script>

@@ -3,7 +3,7 @@
     <div>
         <van-nav-bar title="影院" @click-left="onClickLeft" @click-right="onClickRight">
             <template #left>
-                {{$store.state.cityName}}
+                {{cityName}}
                 <van-icon name="arrow-down" color="#000" size="10"/>
             </template>
             <template #right>
@@ -12,7 +12,7 @@
         </van-nav-bar>
         <div class="cinema" :style="{height:height}">
             <ul>
-                <li v-for="item in $store.state.cinemaList" :key="item.cinemaId">
+                <li v-for="item in cinemaList" :key="item.cinemaId">
                     {{item.name}}
                     <p>{{item.address}}</p>
                 </li>
@@ -27,6 +27,7 @@ import BetterScroll from "better-scroll"    //引入BetterScroll插件
 
 import Vue from 'vue';
 import { NavBar,Icon } from 'vant';
+import { mapActions, mapMutations, mapState } from 'vuex';
 Vue.use(NavBar).use(Icon);
 
 export default {
@@ -36,10 +37,16 @@ export default {
             height:0
         }
     },
+    computed:{
+        ...mapState("CityModule",['cityName','cityId']),
+        ...mapState("CinemaModule",['cinemaList'])
+    },
     methods:{
+        ...mapMutations("CinemaModule",['clearCinemaList']),
+        ...mapActions("CinemaModule",['getCinemaData']),
         onClickLeft(){
 
-            this.$store.commit("clearCinemaList")
+            this.clearCinemaList()
             this.$router.push("/city")
         },
         onClickRight(){
@@ -49,9 +56,10 @@ export default {
     mounted(){
         this.height = document.documentElement.clientHeight-100+"px";
 
-        if(this.$store.state.cinemaList.length === 0){
+
+        if(this.cinemaList.length === 0){
             //Vuex的异步流程，把请求数据的操作交给store中的action
-            this.$store.dispatch("getCinemaData",this.$store.state.cityId).then(res=>{
+            this.getCinemaData(this.cityId).then(res=>{
 
                 this.$nextTick(()=>{
                     new BetterScroll(".cinema",{
@@ -72,6 +80,7 @@ export default {
             })
         }
     }
+    
 }
 </script>
 

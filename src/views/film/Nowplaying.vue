@@ -32,6 +32,7 @@
 import http from "@/util/http"
 import Vue from "vue"
 import {List,Cell} from "vant"
+import { mapState } from 'vuex'
 Vue.use(List).use(Cell)
 
 //用过滤器对演员数据进行过滤，因为传过来的数据是数组
@@ -53,7 +54,7 @@ export default {
     },
     mounted(){
         http({
-            url:"/gateway?cityId=440300&pageNum=1&pageSize=10&type=1&k=9350393",
+            url:`/gateway?cityId=${this.cityId}&pageNum=1&pageSize=10&type=1&k=9350393`,
             headers:{
                 'X-Host': 'mall.film-ticket.film.list'
             },
@@ -62,6 +63,11 @@ export default {
             this.dataList = res.data.data.films;
             this.total = res.data.data.total;
         })
+
+        console.log(mapState("CityModule",['cityId']))
+    },
+    computed:{
+        ...mapState("CityModule",['cityId'])
     },
     methods:{
 
@@ -81,7 +87,7 @@ export default {
             this.currentPage++;     //将页数增加1，请求下一页数据
 
             http({
-                url:`/gateway?cityId=${this.$store.state.cityId}&pageNum=${this.currentPage}&pageSize=10&type=1&k=9350393`,
+                url:`/gateway?cityId=${this.cityId}&pageNum=${this.currentPage}&pageSize=10&type=1&k=9350393`,
                 headers:{
                     'X-Host': 'mall.film-ticket.film.list'
                 },
@@ -91,6 +97,8 @@ export default {
                 this.loading = false    //将loading置为false表示这次请求已经完成了
             })
         },
+        
+            
         handleClick(filmId){
             console.log(filmId);
             this.$router.push({

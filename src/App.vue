@@ -1,12 +1,13 @@
 <template>
   <div>
     <router-view></router-view>
-    <tabbar v-show="$store.state.isTabbarShow"></tabbar>
+    <tabbar v-show="isTabbarShow"></tabbar>
   </div>
 </template>
 
 <script>
 import tabbar from "./components/Tabbar"
+import {mapState} from "vuex"
 
 export default {
   components:{
@@ -16,6 +17,12 @@ export default {
     return{
       
     }
+  },
+  computed:{
+    ...mapState("TabbarModule",['isTabbarShow'])
+  },
+  mounted(){
+    console.log(mapState("TabbarModule",['isTabbarShow']))
   }
 }
 </script>

@@ -56,6 +56,7 @@ import moment from "moment"         //引入moment.js，用来出来时间
 import detailSwiper from "./detail/DetailSwiper"
 import detailHeader from "./detail/DetailHeader"
 import { ImagePreview } from 'vant';    //引入图片预览组件
+import { mapMutations } from 'vuex'
 
 //用过滤器对时间进行处理
 Vue.filter("dateFilter",(date)=>{
@@ -93,6 +94,9 @@ export default {
         }
     },
     methods:{
+        ...mapMutations("TabbarModule",['show','hide']),
+
+
         handleClick(){
             this.showMore = !this.showMore
         },
@@ -110,7 +114,8 @@ export default {
     mounted(){
 
         //通过$state中的isTabbarShow让底部导航栏隐藏
-        this.$store.commit("hide")
+        // this.$store.commit("hide")
+        this.hide()
 
         // console.log("利用传过来的动态ID","向后端发送ajax请求");
         http({
@@ -132,7 +137,8 @@ export default {
 
    //在详情页销毁之前记得要把底部导航栏的状态设为true
    beforeDestroy(){
-       this.$store.commit("show")
+    //    this.$store.commit("show")
+    this.show()
    }
 }
 </script>
